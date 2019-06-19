@@ -17,11 +17,3 @@ steps:
     echo Add other tasks to build, test, and deploy your project.
     echo See https://aka.ms/yaml
   displayName: 'Run a multi-line script'
-- task: AzureResourceGroupDeployment@2
-  inputs:
-    azureSubscription: 'TEST-Sub-ljankow-01 (fbdcee66-8eff-4939-9425-b08f43e87665)'
-    action: 'Create Or Update Resource Group'
-    resourceGroupName: 'ARM_new_Group-01'
-    location: 'West Europe'
-    templateLocation: 'Linked artifact'
-    deploymentMode: 'Incremental'
