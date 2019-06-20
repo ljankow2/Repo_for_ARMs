@@ -1,0 +1,216 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "Virtual Network Name": {
+            "defaultValue": "VNet",
+            "type": "string",
+            "metadata": {
+                "description": "Enter first part of name of new Virtual Network. For example if 'VNet' then it will like: 'VNet--10-124-40-0--24'"
+            }
+        },
+        "3th octet of the network address": {
+            "type": "string",
+            "defaultValue": "40",
+            "metadata": {
+                "description": "Chose 3th octet of the network address. For example if '40' than it will be like: '10.124.40.0/24'."
+            }
+        }
+    },
+    "variables": {
+        "1th_octet_of_network_address": "10",
+        "2th_octet_of_network_address": "124",
+        "4th_octet_of_network_address": "0",
+        "Network_MASK": "24",
+        "1th_Part_of_Network_address": "[concat(variables('1th_octet_of_network_address'), '.', variables('2th_octet_of_network_address'), '.', parameters('3th octet of the network address'), '.')]",
+        "Network_address": "[concat(variables('1th_Part_of_Network_address'), variables('4th_octet_of_network_address'), '/', variables('Network_MASK'))]",
+        "1th_Part_of_Network_Name": "[concat(variables('1th_octet_of_network_address'), '-', variables('2th_octet_of_network_address'), '-', parameters('3th octet of the network address'), '-')]",
+        "Network_Name": "[concat(parameters('Virtual Network Name'), '--', variables('1th_Part_of_Network_Name'), variables('4th_octet_of_network_address'), '--', variables('Network_MASK'))]",
+        "2th_subnet_4th_octet_number": "32",
+        "3th_subnet_4th_octet_number": "64",
+        "4th_subnet_4th_octet_number": "96",
+        "5th_subnet_4th_octet_number": "128",
+        "6th_subnet_4th_octet_number": "160",
+        "7th_subnet_4th_octet_number": "192",
+        "8th_subnet_4th_octet_number": "224",
+        "SubNet_MASK": "27",
+        "1th_SubNet_Name_Gateway": "GatewaySubnet",
+        "2th_SubNet_Name": "[concat('SubName--', variables('1th_Part_of_Network_Name'), variables('2th_subnet_4th_octet_number'), '--', variables('SubNet_MASK')) ]",
+        "3th_SubNet_Name": "[concat('SubName--', variables('1th_Part_of_Network_Name'), variables('3th_subnet_4th_octet_number'), '--', variables('SubNet_MASK')) ]",
+        "4th_SubNet_Name": "[concat('SubName--', variables('1th_Part_of_Network_Name'), variables('4th_subnet_4th_octet_number'), '--', variables('SubNet_MASK')) ]",
+        "5th_SubNet_Name": "[concat('SubName--', variables('1th_Part_of_Network_Name'), variables('5th_subnet_4th_octet_number'), '--', variables('SubNet_MASK')) ]",
+        "6th_SubNet_Name": "[concat('SubName--', variables('1th_Part_of_Network_Name'), variables('6th_subnet_4th_octet_number'), '--', variables('SubNet_MASK')) ]",
+        "7th_SubNet_Name": "[concat('SubName--', variables('1th_Part_of_Network_Name'), variables('7th_subnet_4th_octet_number'), '--', variables('SubNet_MASK')) ]",
+        "8th_SubNet_Name": "[concat('SubName--', variables('1th_Part_of_Network_Name'), variables('8th_subnet_4th_octet_number'), '--', variables('SubNet_MASK')) ]",
+        "1th_Subnet_address-Gateway": "[concat(variables('1th_Part_of_Network_address'), '0', '/', variables('SubNet_MASK'))]",
+        "2th_SubNet_address": "[concat(variables('1th_Part_of_Network_address'), variables('2th_subnet_4th_octet_number'), '/', variables('SubNet_MASK'))]",
+        "3th_SubNet_address": "[concat(variables('1th_Part_of_Network_address'), variables('3th_subnet_4th_octet_number'), '/', variables('SubNet_MASK'))]",
+        "4th_SubNet_address": "[concat(variables('1th_Part_of_Network_address'), variables('4th_subnet_4th_octet_number'), '/', variables('SubNet_MASK'))]",
+        "5th_SubNet_address": "[concat(variables('1th_Part_of_Network_address'), variables('5th_subnet_4th_octet_number'), '/', variables('SubNet_MASK'))]",
+        "6th_SubNet_address": "[concat(variables('1th_Part_of_Network_address'), variables('6th_subnet_4th_octet_number'), '/', variables('SubNet_MASK'))]",
+        "7th_SubNet_address": "[concat(variables('1th_Part_of_Network_address'), variables('7th_subnet_4th_octet_number'), '/', variables('SubNet_MASK'))]",
+        "8th_SubNet_address": "[concat(variables('1th_Part_of_Network_address'), variables('8th_subnet_4th_octet_number'), '/', variables('SubNet_MASK'))]"
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Network/virtualNetworks",
+            "apiVersion": "2019-02-01",
+            "name": "[variables('Network_Name')]",
+            "location": "westeurope",
+            "properties": {
+                "addressSpace": {
+                    "addressPrefixes": ["[variables('Network_address')]"]
+                },
+                "subnets": [
+                    {
+                        "name": "[variables('1th_SubNet_Name_Gateway')]",
+                        "properties": {
+                            "addressPrefix": "[variables('1th_Subnet_address-Gateway')]"
+                        }
+                    },
+                    {
+                        "name": "[variables('2th_SubNet_Name')]",
+                        "properties": {
+                            "addressPrefix": "[variables('2th_SubNet_address')]"
+                        }
+                    },
+                    {
+                        "name": "[variables('3th_SubNet_Name')]",
+                        "properties": {
+                            "addressPrefix": "[variables('3th_SubNet_address')]"
+                        }
+                    },
+                    {
+                        "name": "[variables('4th_SubNet_Name')]",
+                        "properties": {
+                            "addressPrefix": "[variables('4th_SubNet_address')]"
+                        }
+                    },
+                    {
+                        "name": "[variables('5th_SubNet_Name')]",
+                        "properties": {
+                            "addressPrefix": "[variables('5th_SubNet_address')]"
+                        }
+                    },
+                    {
+                        "name": "[variables('6th_SubNet_Name')]",
+                        "properties": {
+                            "addressPrefix": "[variables('6th_SubNet_address')]"
+                        }
+                    },
+                    {
+                        "name": "[variables('7th_SubNet_Name')]",
+                        "properties": {
+                            "addressPrefix": "[variables('7th_SubNet_address')]"
+                        }
+                    },
+                    {
+                        "name": "[variables('8th_SubNet_Name')]",
+                        "properties": {
+                            "addressPrefix": "[variables('8th_SubNet_address')]"
+                        }
+                    }
+                ],
+                "virtualNetworkPeerings": [],
+                "enableDdosProtection": false,
+                "enableVmProtection": false
+            }
+        },
+        {
+            "type": "Microsoft.Network/virtualNetworks/subnets",
+            "apiVersion": "2019-02-01",
+            "name": "[concat(variables('Network_Name'), '/',variables('1th_SubNet_Name_Gateway'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/virtualNetworks', variables('Network_Name'))]"
+            ],
+            "properties": {
+                "addressPrefix": "[variables('1th_Subnet_address-Gateway')]",
+                "delegations": []
+            }
+        },
+        {
+            "type": "Microsoft.Network/virtualNetworks/subnets",
+            "apiVersion": "2019-02-01",
+            "name": "[concat(variables('Network_Name'), '/',variables('2th_SubNet_Name'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/virtualNetworks', variables('Network_Name'))]"
+            ],
+            "properties": {
+                "addressPrefix": "[variables('2th_SubNet_address')]",
+                "delegations": []
+            }
+        },
+        {
+            "type": "Microsoft.Network/virtualNetworks/subnets",
+            "apiVersion": "2019-02-01",
+            "name": "[concat(variables('Network_Name'), '/',variables('3th_SubNet_Name'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/virtualNetworks', variables('Network_Name'))]"
+            ],
+            "properties": {
+                "addressPrefix": "[variables('3th_SubNet_address')]",
+                "delegations": []
+            }
+        },
+        {
+            "type": "Microsoft.Network/virtualNetworks/subnets",
+            "apiVersion": "2019-02-01",
+            "name": "[concat(variables('Network_Name'), '/',variables('4th_SubNet_Name'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/virtualNetworks', variables('Network_Name'))]"
+            ],
+            "properties": {
+                "addressPrefix": "[variables('4th_SubNet_address')]",
+                "delegations": []
+            }
+        },
+        {
+            "type": "Microsoft.Network/virtualNetworks/subnets",
+            "apiVersion": "2019-02-01",
+            "name": "[concat(variables('Network_Name'), '/',variables('5th_SubNet_Name'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/virtualNetworks', variables('Network_Name'))]"
+            ],
+            "properties": {
+                "addressPrefix": "[variables('5th_SubNet_address')]",
+                "delegations": []
+            }
+        },
+        {
+            "type": "Microsoft.Network/virtualNetworks/subnets",
+            "apiVersion": "2019-02-01",
+            "name": "[concat(variables('Network_Name'), '/',variables('6th_SubNet_Name'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/virtualNetworks', variables('Network_Name'))]"
+            ],
+            "properties": {
+                "addressPrefix": "[variables('6th_SubNet_address')]",
+                "delegations": []
+            }
+        },
+        {
+            "type": "Microsoft.Network/virtualNetworks/subnets",
+            "apiVersion": "2019-02-01",
+            "name": "[concat(variables('Network_Name'), '/',variables('7th_SubNet_Name'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/virtualNetworks', variables('Network_Name'))]"
+            ],
+            "properties": {
+                "addressPrefix": "[variables('7th_SubNet_address')]",
+                "delegations": []
+            }
+        },
+        {
+            "type": "Microsoft.Network/virtualNetworks/subnets",
+            "apiVersion": "2019-02-01",
+            "name": "[concat(variables('Network_Name'), '/',variables('8th_SubNet_Name'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/virtualNetworks', variables('Network_Name'))]"
+            ],
+            "properties": {
+                "addressPrefix": "[variables('8th_SubNet_address')]",
+                "delegations": []
+            }
+        }
+    ]
+}
